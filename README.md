@@ -42,4 +42,5 @@ Proyek ini dibuat menggunakan:
 Soal ditampilkan dalam bentuk **website statis** yang dapat dijalankan langsung melalui browser.
 
 ## ▶️ Cara Menjalankan
-    Kunjungi URL Ini :  https://soal-anbk-kelas-5-sd-2025.vercel.app/
+Kunjungi URL Ini : 
+https://soal-anbk-kelas-5-sd-2025.vercel.app/
