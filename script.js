@@ -87,6 +87,9 @@ const finishBtn = document.getElementById("finish");
 const resultEl = document.getElementById("result");
 const historyEl = document.getElementById("history");
 
+// back to home button
+const backHomeBtn = document.getElementById("backHomeBtn");
+
 let loginBox;
 
 // buat form login
@@ -193,7 +196,43 @@ finishBtn.addEventListener("click", () => {
   localStorage.setItem("anbkHistory", JSON.stringify(allHistory));
 
   showHistory();
+
+  // show back to home button
+  if (backHomeBtn) backHomeBtn.classList.remove('hidden');
 });
+
+// back to home handler
+if (backHomeBtn) {
+  backHomeBtn.addEventListener('click', () => {
+    // hide quiz and results
+    quizBox.classList.add('hidden');
+    resultEl.classList.add('hidden');
+    historyEl.classList.add('hidden');
+    backHomeBtn.classList.add('hidden');
+
+    // reset state
+    questions = [];
+    answers = [];
+    current = 0;
+
+    // clear UI
+    progressEl.innerHTML = '';
+    questionEl.innerText = '';
+    optionsEl.innerHTML = '';
+
+    // show start or login depending on saved username
+    const saved = localStorage.getItem("anbkUsername");
+    if (saved) {
+      startBtn.classList.remove('hidden');
+    } else {
+      startBtn.classList.add('hidden');
+      // if you used the static login box, show it
+      const staticLogin = document.getElementById('login-box');
+      if (staticLogin) staticLogin.classList.remove('hidden');
+      else showLogin();
+    }
+  });
+}
 
 function showHistory() {
   let allHistory = JSON.parse(localStorage.getItem("anbkHistory") || "{}");
