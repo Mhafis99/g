@@ -90,28 +90,6 @@ const historyEl = document.getElementById("history");
 // back to home button
 const backHomeBtn = document.getElementById("backHomeBtn");
 
-let loginBox;
-
-// buat form login
-function showLogin() {
-  loginBox = document.createElement("div");
-  loginBox.innerHTML = `
-    <h2>Login Username</h2>
-    <input id="usernameInput" type="text" placeholder="Masukkan username" />
-    <button id="loginBtn">Login</button>
-  `;
-  loginBox.classList.add("bubble-box");
-  document.getElementById("app").prepend(loginBox);
-
-  document.getElementById("loginBtn").addEventListener("click", () => {
-    const input = document.getElementById("usernameInput").value.trim();
-    if (!input) return alert("Isi username dulu!");
-    username = input;
-    localStorage.setItem("anbkUsername", username);
-    loginBox.remove();
-    startBtn.classList.remove("hidden");
-  });
-}
 
 // cek apakah sudah ada username tersimpan
 window.addEventListener("load", () => {
@@ -119,8 +97,13 @@ window.addEventListener("load", () => {
   if (saved) {
     username = saved;
     startBtn.classList.remove("hidden");
+    
+    const staticLogin = document.getElementById('login-box');
+    if (staticLogin) staticLogin.classList.add('hidden');
   } else {
-    showLogin();
+    
+    const staticLogin = document.getElementById('login-box');
+    if (staticLogin) staticLogin.classList.remove('hidden');
   }
 });
 
@@ -196,37 +179,29 @@ finishBtn.addEventListener("click", () => {
   localStorage.setItem("anbkHistory", JSON.stringify(allHistory));
 
   showHistory();
-
-  // show back to home button
   if (backHomeBtn) backHomeBtn.classList.remove('hidden');
 });
 
-// back to home handler
+
 if (backHomeBtn) {
   backHomeBtn.addEventListener('click', () => {
-    // hide quiz and results
     quizBox.classList.add('hidden');
     resultEl.classList.add('hidden');
     historyEl.classList.add('hidden');
     backHomeBtn.classList.add('hidden');
-
-    // reset state
     questions = [];
     answers = [];
     current = 0;
-
-    // clear UI
     progressEl.innerHTML = '';
     questionEl.innerText = '';
     optionsEl.innerHTML = '';
 
-    // show start or login depending on saved username
+   
     const saved = localStorage.getItem("anbkUsername");
     if (saved) {
       startBtn.classList.remove('hidden');
     } else {
       startBtn.classList.add('hidden');
-      // if you used the static login box, show it
       const staticLogin = document.getElementById('login-box');
       if (staticLogin) staticLogin.classList.remove('hidden');
       else showLogin();
@@ -255,17 +230,14 @@ function showHistory() {
 const loginForm = document.getElementById('login-form');
 
 loginForm.addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent the default form submission
-  const usernameInput = document.getElementById('username').value;
-  const passwordInput = document.getElementById('password').value;
+  event.preventDefault();
+  const usernameInput = document.getElementById('username').value.trim();
+  if (!usernameInput) return alert('Masukkan username.');
 
-  // Here you can add your login logic (e.g., validation)
-  if (usernameInput && passwordInput) {
-    username = usernameInput; // Store the username
-    alert(`Welcome, ${username}!`); // Simple welcome message
-    document.getElementById('login-box').classList.add('hidden'); // Hide login box
-    document.getElementById('quiz-box').classList.remove('hidden'); // Show quiz box
-  } else {
-    alert('Please enter both username and password.');
-  }
+  username = usernameInput;
+  localStorage.setItem('anbkUsername', username);
+  // hide login and show start
+  const staticLogin = document.getElementById('login-box');
+  if (staticLogin) staticLogin.classList.add('hidden');
+  startBtn.classList.remove('hidden');
 });
