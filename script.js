@@ -211,3 +211,22 @@ function showHistory() {
     historyEl.innerHTML = `<h3>Riwayat Nilai (${username})</h3><p>Belum ada riwayat.</p>`;
   });
 }
+
+// ============= Login Functionality =============
+const loginForm = document.getElementById('login-form');
+
+loginForm.addEventListener('submit', function(event) {
+  event.preventDefault(); // Prevent the default form submission
+  const usernameInput = document.getElementById('username').value;
+  const passwordInput = document.getElementById('password').value;
+
+  // Here you can add your login logic (e.g., validation)
+  if (usernameInput && passwordInput) {
+    username = usernameInput; // Store the username
+    alert(`Welcome, ${username}!`); // Simple welcome message
+    document.getElementById('login-box').classList.add('hidden'); // Hide login box
+    document.getElementById('quiz-box').classList.remove('hidden'); // Show quiz box
+  } else {
+    alert('Please enter both username and password.');
+  }
+});
